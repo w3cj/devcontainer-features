@@ -1,0 +1,226 @@
+{
+    "id": "firewall",
+    "version": "0.0.1",
+    "name": "Firewall",
+    "documentationURL": "http://github.com/w3cj/devcontainer-features/tree/main/src/firewall",
+    "description": "Sets up an iptables-based firewall that restricts network access to only specified hosts. This is useful for creating sandboxed development environments with limited network access.",
+    "options": {
+        "verbose": {
+            "type": "boolean",
+            "default": false,
+            "description": "Show inline terminal notifications when connections are blocked"
+        },
+        "hosts": {
+            "type": "string",
+            "default": "",
+            "description": "Comma-separated list of additional hosts to allow"
+        },
+        "dockerNetworks": {
+            "type": "boolean",
+            "default": true,
+            "description": "Allow traffic to/from all Docker networks (for inter-container communication)"
+        },
+        "dnsPublic": {
+            "type": "boolean",
+            "default": false,
+            "description": "Public DNS servers"
+        },
+        "githubDomains": {
+            "type": "boolean",
+            "default": false,
+            "description": "GitHub domains"
+        },
+        "githubIps": {
+            "type": "boolean",
+            "default": false,
+            "description": "GitHub IP ranges (fetched at runtime)"
+        },
+        "npmRegistry": {
+            "type": "boolean",
+            "default": false,
+            "description": "npm registry"
+        },
+        "pypi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Python Package Index"
+        },
+        "cratesIoRegistry": {
+            "type": "boolean",
+            "default": false,
+            "description": "Rust crates.io registry"
+        },
+        "vscodeMarketplace": {
+            "type": "boolean",
+            "default": false,
+            "description": "VS Code marketplace"
+        },
+        "dockerRegistry": {
+            "type": "boolean",
+            "default": false,
+            "description": "Docker Hub registry"
+        },
+        "debianPackages": {
+            "type": "boolean",
+            "default": false,
+            "description": "Debian repositories"
+        },
+        "ubuntuPackages": {
+            "type": "boolean",
+            "default": false,
+            "description": "Ubuntu repositories"
+        },
+        "googleCloudIps": {
+            "type": "boolean",
+            "default": false,
+            "description": "Google Cloud IP ranges (fetched at runtime)"
+        },
+        "cloudflareIps": {
+            "type": "boolean",
+            "default": false,
+            "description": "Cloudflare CDN IP ranges (fetched at runtime)"
+        },
+        "awsIps": {
+            "type": "boolean",
+            "default": false,
+            "description": "AWS IP ranges (US regions, fetched at runtime)"
+        },
+        "anthropicIps": {
+            "type": "boolean",
+            "default": false,
+            "description": "Anthropic static IP ranges"
+        },
+        "claudeCode": {
+            "type": "boolean",
+            "default": false,
+            "description": "Claude Code (Anthropic API, Sentry, npm, VS Code marketplace)"
+        },
+        "codex": {
+            "type": "boolean",
+            "default": false,
+            "description": "OpenAI Codex CLI (OpenAI API, npm)"
+        },
+        "allAiProviders": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable all AI provider APIs"
+        },
+        "context7Mcp": {
+            "type": "boolean",
+            "default": false,
+            "description": "Context7 MCP"
+        },
+        "openrouterApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "OpenRouter API"
+        },
+        "anthropicApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Anthropic API"
+        },
+        "sentry": {
+            "type": "boolean",
+            "default": false,
+            "description": "Sentry error tracking"
+        },
+        "openaiApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "OpenAI API"
+        },
+        "googleAiApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Google AI API"
+        },
+        "cerebrasApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Cerebras API"
+        },
+        "qwenApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Qwen/Alibaba API"
+        },
+        "minimaxApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Minimax API"
+        },
+        "cohereApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Cohere API"
+        },
+        "togetherApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Together API"
+        },
+        "replicateApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Replicate API"
+        },
+        "huggingfaceApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Hugging Face API"
+        },
+        "perplexityApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Perplexity API"
+        },
+        "mistralApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Mistral API"
+        },
+        "deepinfraApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "DeepInfra API"
+        },
+        "fireworksApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Fireworks API"
+        },
+        "groqApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Groq API"
+        },
+        "leptonApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Lepton API"
+        },
+        "mancerApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Mancer API"
+        },
+        "deepseekApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "DeepSeek API"
+        },
+        "yiApi": {
+            "type": "boolean",
+            "default": false,
+            "description": "Yi/01.AI API"
+        }
+    },
+    "capAdd": ["NET_ADMIN", "NET_RAW"],
+    "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
+    "dependsOn": {
+        "ghcr.io/devcontainers-extra/features/apt-get-packages:1": {
+            "packages": "iptables,ipset,dnsutils,jq,curl,iproute2,aggregate,sudo,tcpdump,ulogd2"
+        }
+    }
+}

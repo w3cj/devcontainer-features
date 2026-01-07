@@ -1,0 +1,161 @@
+{
+    "anthropicApi": [
+        "api.anthropic.com",
+        "docs.claude.com",
+        "statsig.anthropic.com",
+        "statsig.com"
+    ],
+    "sentry": [
+        "sentry.io"
+    ],
+    "openaiApi": [
+        "auth.openai.com",
+        "chatgpt.com",
+        "api.openai.com"
+    ],
+    "googleAiApi": [
+        "aistudio.google.com",
+        "accounts.google.com",
+        "oauth2.googleapis.com",
+        "www.googleapis.com",
+        "storage.googleapis.com",
+        "content.googleapis.com",
+        "generativelanguage.googleapis.com",
+        "fonts.googleapis.com",
+        "fonts.gstatic.com"
+    ],
+    "npmRegistry": [
+        "registry.npmjs.org"
+    ],
+    "pypi": [
+        "pypi.org",
+        "files.pythonhosted.org"
+    ],
+    "vscodeMarketplace": [
+        "marketplace.visualstudio.com",
+        "vscode.blob.core.windows.net",
+        "update.code.visualstudio.com"
+    ],
+    "dnsPublic": [
+        "dns.google",
+        "1.1.1.1",
+        "8.8.8.8",
+        "8.8.4.4"
+    ],
+    "githubDomains": [
+        "github.com",
+        "api.github.com",
+        "raw.githubusercontent.com",
+        "github.githubassets.com",
+        "collector.github.com",
+        "ghcr.io",
+        "pkg-containers.githubusercontent.com"
+    ],
+    "dockerRegistry": [
+        "docker.io",
+        "registry-1.docker.io",
+        "auth.docker.io",
+        "production.cloudflare.docker.com"
+    ],
+    "debianPackages": [
+        "deb.debian.org",
+        "security.debian.org"
+    ],
+    "ubuntuPackages": [
+        "archive.ubuntu.com",
+        "security.ubuntu.com"
+    ],
+    "cratesIoRegistry": [
+        "crates.io",
+        "static.crates.io",
+        "index.crates.io"
+    ],
+    "context7Mcp": [
+        "context7.com",
+        "mcp.context7.com"
+    ],
+    "cerebrasApi": [
+        "api.cerebras.ai",
+        "inference.cerebras.ai",
+        "cloud.cerebras.ai",
+        "cerebras.ai"
+    ],
+    "qwenApi": [
+        "dashscope.aliyuncs.com",
+        "qwen.ai",
+        "qwenlm.ai",
+        "aliyuncs.com",
+        "alibabacloud.com",
+        "cn-hangzhou.aliyuncs.com",
+        "us-west-1.aliyuncs.com",
+        "ap-southeast-1.aliyuncs.com"
+    ],
+    "minimaxApi": [
+        "api.minimax.chat",
+        "minimax.chat",
+        "z.ai"
+    ],
+    "cohereApi": [
+        "api.cohere.ai",
+        "cohere.ai"
+    ],
+    "togetherApi": [
+        "api.together.xyz",
+        "together.xyz"
+    ],
+    "replicateApi": [
+        "api.replicate.com",
+        "replicate.com"
+    ],
+    "huggingfaceApi": [
+        "api-inference.huggingface.co",
+        "huggingface.co"
+    ],
+    "perplexityApi": [
+        "api.perplexity.ai",
+        "perplexity.ai"
+    ],
+    "mistralApi": [
+        "api.mistral.ai",
+        "mistral.ai"
+    ],
+    "deepinfraApi": [
+        "api.deepinfra.com",
+        "deepinfra.com"
+    ],
+    "fireworksApi": [
+        "api.fireworks.ai",
+        "fireworks.ai"
+    ],
+    "groqApi": [
+        "api.groq.com",
+        "groq.com"
+    ],
+    "leptonApi": [
+        "api.lepton.ai",
+        "lepton.ai"
+    ],
+    "mancerApi": [
+        "mancer.tech",
+        "api.mancer.tech"
+    ],
+    "deepseekApi": [
+        "api.deepseek.com",
+        "deepseek.com"
+    ],
+    "yiApi": [
+        "api.lingyiwanwu.com",
+        "platform.lingyiwanwu.com"
+    ],
+    "openrouterApi": [
+        "openrouter.ai"
+    ],
+    "anthropicIps": [
+        "160.79.104.0/23",
+        "34.162.46.92",
+        "34.162.102.82",
+        "34.162.136.91",
+        "34.162.142.92",
+        "34.162.183.95"
+    ]
+}

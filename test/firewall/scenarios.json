@@ -1,0 +1,73 @@
+{
+    "test_verbose": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "verbose": true,
+                "githubIps": true
+            }
+        }
+    },
+    "test_debian": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "githubIps": true
+            }
+        }
+    },
+    "test_claude_code": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "claudeCode": true,
+                "githubIps": true
+            }
+        }
+    },
+    "test_openai": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "openaiApi": true,
+                "npmRegistry": true,
+                "githubIps": true
+            }
+        }
+    },
+    "test_custom_hosts": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "hosts": "api.anthropic.com,registry.npmjs.org",
+                "githubIps": true
+            }
+        }
+    },
+    "test_without_github": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "anthropicApi": true,
+                "githubIps": false
+            }
+        }
+    },
+    "test_cloudflare_ips": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "cloudflareIps": true,
+                "githubIps": true
+            }
+        }
+    },
+    "test_blocking": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "firewall": {
+                "githubIps": true
+            }
+        }
+    }
+}
