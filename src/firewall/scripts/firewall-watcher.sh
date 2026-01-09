@@ -7,6 +7,7 @@ set -u
 
 FIREWALL_TMP="/var/run/firewall"
 DNS_CACHE="$FIREWALL_TMP/dns-cache"
+DNS_PENDING="$FIREWALL_TMP/dns-pending"
 DISPLAY_QUEUE="$FIREWALL_TMP/display-queue"
 DEDUP_FILE="$FIREWALL_TMP/dedup"
 DEBUG_LOG="$FIREWALL_TMP/watcher-debug.log"
@@ -23,16 +24,18 @@ log_debug "Watcher script started"
 # Display queue and lock are writable by user shells for atomic read-and-clear
 touch "$DISPLAY_QUEUE" "$FIREWALL_TMP/queue.lock"
 chmod 666 "$DISPLAY_QUEUE" "$FIREWALL_TMP/queue.lock"
-touch "$DNS_CACHE" "$DEDUP_FILE"
-chmod 644 "$DNS_CACHE" "$DEDUP_FILE"
+touch "$DNS_CACHE" "$DNS_PENDING" "$DEDUP_FILE"
+chmod 644 "$DNS_CACHE" "$DNS_PENDING" "$DEDUP_FILE"
 
 log_debug "Files initialized"
 
-# Cleanup expired DNS cache entries
+# Cleanup expired DNS cache and pending query entries
 cleanup_dns_cache() {
     local now
     now=$(date +%s)
     local temp_file
+
+    # Cleanup DNS cache
     temp_file=$(mktemp)
     while IFS='|' read -r ip hostname timestamp; do
         if [ $((now - timestamp)) -lt $CACHE_TTL ]; then
@@ -40,6 +43,15 @@ cleanup_dns_cache() {
         fi
     done < "$DNS_CACHE" > "$temp_file" 2>/dev/null
     mv "$temp_file" "$DNS_CACHE" 2>/dev/null || true
+
+    # Cleanup pending DNS queries (use shorter 10s TTL since responses arrive quickly)
+    temp_file=$(mktemp)
+    while IFS='|' read -r txn_id domain timestamp; do
+        if [ $((now - timestamp)) -lt 10 ]; then
+            echo "$txn_id|$domain|$timestamp"
+        fi
+    done < "$DNS_PENDING" > "$temp_file" 2>/dev/null
+    mv "$temp_file" "$DNS_PENDING" 2>/dev/null || true
 }
 
 # Cleanup expired dedup entries
@@ -85,26 +97,49 @@ reverse_dns() {
     echo "$result"
 }
 
-# Parse DNS response from tcpdump and update cache
-parse_dns_response() {
+# Parse DNS query/response from tcpdump and update cache
+# Correlates queries (which have domain names) with responses (which have IPs)
+# using the DNS transaction ID
+parse_dns_line() {
     local line="$1"
     local now
     now=$(date +%s)
 
-    # tcpdump DNS response format: "12:34:56.789 IP 8.8.8.8.53 > 172.17.0.2.54321: 12345 1/0/0 A 93.184.216.34 (45)"
-    # Or: "... example.com. A 93.184.216.34"
+    # DNS Query format: "... 25679+ A? example.com. (43)"
+    # Extract transaction ID and domain from queries
+    if echo "$line" | grep -qE '[0-9]+\+ A\?'; then
+        local txn_id domain
+        txn_id=$(echo "$line" | grep -oE '[0-9]+\+ A\?' | grep -oE '^[0-9]+')
+        domain=$(echo "$line" | grep -oE 'A\? [^ ]+' | sed 's/A? //' | sed 's/\.$//')
+        if [ -n "$txn_id" ] && [ -n "$domain" ]; then
+            # Store pending query (will be matched with response)
+            echo "$txn_id|$domain|$now" >> "$DNS_PENDING"
+        fi
+        return
+    fi
 
-    # Extract domain and IP from A record responses
-    if echo "$line" | grep -qE ' A [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'; then
-        local domain ip
-        # Try to extract domain name (appears before " A ")
-        domain=$(echo "$line" | grep -oE '[a-zA-Z0-9][-a-zA-Z0-9]*(\.[a-zA-Z0-9][-a-zA-Z0-9]*)+\.? A ' | sed 's/ A $//' | sed 's/\.$//')
-        ip=$(echo "$line" | grep -oE ' A [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}')
+    # DNS Response format: "... 25679 4/0/0 A 185.199.111.133, A 185.199.108.133"
+    # Extract transaction ID and IPs, lookup domain from pending queries
+    if echo "$line" | grep -qE '[0-9]+ [0-9]+/[0-9]+/[0-9]+ A '; then
+        local txn_id domain
+        txn_id=$(echo "$line" | grep -oE '[0-9]+ [0-9]+/[0-9]+/[0-9]+' | awk '{print $1}')
+        domain=$(grep "^$txn_id|" "$DNS_PENDING" 2>/dev/null | head -1 | cut -d'|' -f2)
 
-        if [ -n "$domain" ] && [ -n "$ip" ]; then
-            grep -v "^$ip|" "$DNS_CACHE" > "$DNS_CACHE.tmp" 2>/dev/null || true
-            echo "$ip|$domain|$now" >> "$DNS_CACHE.tmp"
-            mv "$DNS_CACHE.tmp" "$DNS_CACHE" 2>/dev/null || true
+        if [ -n "$domain" ]; then
+            # Extract all IPs from response (may have multiple A records)
+            local ips
+            ips=$(echo "$line" | grep -oE 'A [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}')
+            while read -r ip; do
+                [ -z "$ip" ] && continue
+                # Update DNS cache with IP -> domain mapping
+                grep -v "^$ip|" "$DNS_CACHE" > "$DNS_CACHE.tmp" 2>/dev/null || true
+                echo "$ip|$domain|$now" >> "$DNS_CACHE.tmp"
+                mv "$DNS_CACHE.tmp" "$DNS_CACHE" 2>/dev/null || true
+            done <<< "$ips"
+
+            # Remove matched query from pending
+            grep -v "^$txn_id|" "$DNS_PENDING" > "$DNS_PENDING.tmp" 2>/dev/null || true
+            mv "$DNS_PENDING.tmp" "$DNS_PENDING" 2>/dev/null || true
         fi
     fi
 }
@@ -131,7 +166,7 @@ counter=0
 # Start DNS capture in background
 log_debug "Starting DNS capture..."
 tcpdump -l -n -i any 'port 53' 2>/dev/null | while IFS= read -r line; do
-    parse_dns_response "$line"
+    parse_dns_line "$line"
 done &
 DNS_PID=$!
 log_debug "DNS capture started with PID $DNS_PID"
