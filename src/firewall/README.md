@@ -7,7 +7,7 @@ Sets up an iptables-based firewall that restricts network access to only specifi
 
 ```json
 "features": {
-    "ghcr.io/w3cj/devcontainer-features/firewall:0": {}
+    "ghcr.io/w3cj/devcontainer-features/firewall:latest": {}
 }
 ```
 
@@ -64,7 +64,7 @@ See [`hosts.json`](hosts.json) for the full list of domains allowed by each opti
 
 ```json
 "features": {
-    "ghcr.io/w3cj/devcontainer-features/firewall:1": {
+    "ghcr.io/w3cj/devcontainer-features/firewall:latest": {
       "verbose": true,
       "hosts": "10.0.0.42,myapi.com,api.mysite.com",
       "githubIps": true,
@@ -108,7 +108,7 @@ Enable `verbose: true` to see inline terminal notifications when connections are
 
 ```json
 "features": {
-    "ghcr.io/w3cj/devcontainer-features/firewall:1": {
+    "ghcr.io/w3cj/devcontainer-features/firewall:latest": {
         "verbose": true
     }
 }
