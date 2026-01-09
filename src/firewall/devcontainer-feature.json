@@ -1,6 +1,6 @@
 {
     "id": "firewall",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "name": "Firewall",
     "documentationURL": "http://github.com/w3cj/devcontainer-features/tree/main/src/firewall",
     "description": "Sets up an iptables-based firewall that restricts network access to only specified hosts. This is useful for creating sandboxed development environments with limited network access.",
