@@ -45,6 +45,11 @@
             "default": false,
             "description": "Python Package Index"
         },
+        "packagist": {
+            "type": "boolean",
+            "default": false,
+            "description": "PHP Package Repository"
+        },
         "cratesIoRegistry": {
             "type": "boolean",
             "default": false,
