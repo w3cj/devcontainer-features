@@ -31,6 +31,9 @@
         "pypi.org",
         "files.pythonhosted.org"
     ],
+    "packagist": [
+        "packagist.org"
+    ],
     "vscodeMarketplace": [
         "marketplace.visualstudio.com",
         "vscode.blob.core.windows.net",

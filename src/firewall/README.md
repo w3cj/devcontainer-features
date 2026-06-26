@@ -23,6 +23,7 @@ Sets up an iptables-based firewall that restricts network access to only specifi
 | githubIps | GitHub IP ranges (fetched at runtime) | boolean | false |
 | npmRegistry | npm registry | boolean | false |
 | pypi | Python Package Index | boolean | false |
+| packagist | PHP Package Repository | boolean | false |
 | cratesIoRegistry | Rust crates.io registry | boolean | false |
 | vscodeMarketplace | VS Code marketplace | boolean | false |
 | dockerRegistry | Docker Hub registry | boolean | false |
