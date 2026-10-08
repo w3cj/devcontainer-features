@@ -11,6 +11,9 @@ check "firewall script is executable" test -x /usr/local/bin/init-firewall.sh
 # Firewall is already initialized by postStartCommand, verify it's active
 check "firewall DROP policy is set" bash -c 'sudo iptables -L OUTPUT | grep -q "policy DROP"'
 
+# DNS must work over TCP too (fallback for truncated UDP responses, RFC 7766)
+check "DNS over TCP is allowed" bash -c '[ -n "$(dig +tcp +short +time=5 +tries=1 github.com)" ]'
+
 # Positive test: GitHub should be accessible (allowed)
 check "github is accessible" curl --connect-timeout 10 -sf https://api.github.com/zen
 

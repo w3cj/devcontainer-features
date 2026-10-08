@@ -27,7 +27,7 @@ This feature:
 The firewall script:
 
 - Preserves Docker's internal DNS resolution
-- Allows DNS queries (UDP port 53) and SSH (TCP port 22)
+- Allows DNS queries (UDP and TCP port 53) and SSH (TCP port 22)
 - Allows localhost and host network communication
 - Creates an ipset of allowed IP addresses from DNS resolution of all enabled hosts
 - Sets default DROP policies for INPUT, FORWARD, and OUTPUT
